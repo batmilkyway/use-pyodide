@@ -52,9 +52,9 @@ function initialize(
 async function _loadPyodide(packages: string[] = [], stdoutFunc?: (msg: string) => void): Promise<void> {
   self.pyodide = await loadPyodide({
     indexURL,
-    stdout: stdoutFunc || (msg: string) => {
+    stdout: stdoutFunc || ((msg: string) => {
       DEBUG && console.log("loadPyodide stdout: ", msg);
-    },
+    }),
     stderr: (msg: string) => {
       DEBUG && console.log("loadPyodide stderr: ", msg);
     },
