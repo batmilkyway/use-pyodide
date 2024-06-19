@@ -99,7 +99,7 @@ async function runPython(
 //
 
 export interface PyodideRunner {
-  initialize: (packages?: string[]) => Promise<void>;
+  initialize: (packages?: string[], stdoutFunc?: (msg: string) => void) => Promise<void>;
   runPython: (code: string, globals?: Record<string, JSONValue>) => Promise<unknown>;
   version: string;
 }
