@@ -14,12 +14,13 @@ let pyodide: Promise<Pyodide> | undefined;
 export async function initializePyodide(options?: {
   debug: boolean;
   packages?: string[];
+  stdoutFunc?: (msg: string) => void;
 }): Promise<Pyodide> {
   const { debug = false, packages } = options || {};
   setDebug(debug)
 
   if (pyodide === undefined) {
-    pyodide = _initializePyodide(packages);
+    pyodide = _initializePyodide(packages, stdoutFunc);
   }
   return pyodide;
 }
@@ -27,10 +28,10 @@ export async function initializePyodide(options?: {
 /**
  * Initialize Pyodide, and load any given packages.
  */
-const _initializePyodide = async (packages?: string[]): Promise<Pyodide> => {
+const _initializePyodide = async (packages?: string[], stdoutFunc?: (msg: string) => void): Promise<Pyodide> => {
   const start = performance.now();
 
-  pyodide = initializeWorker(packages);
+  pyodide = initializeWorker(packages, stdoutFunc);
 
   DEBUG && logElapsedTime("Pyodide initialized", start);
   return pyodide;
