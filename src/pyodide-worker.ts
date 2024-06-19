@@ -32,13 +32,14 @@ function initialize(
    * See:
    * https://pyodide.org/en/stable/usage/loading-packages.html#loading-packages
    */
-  packages?: string[]
+  packages?: string[],
+  stdoutFunc?: (msg: string) => void
 ) {
   if (_pyodideReady !== null) {
     throw new Error("pyodide was already initialized");
   }
 
-  _pyodideReady = _loadPyodide(packages);
+  _pyodideReady = _loadPyodide(packages, stdoutFunc);
   return _pyodideReady;
 }
 
@@ -48,10 +49,10 @@ function initialize(
  * Loads all packages with micropip, as recommended here:
  * https://pyodide.org/en/stable/usage/loading-packages.html#how-to-chose-between-micropip-install-and-pyodide-loadpackage
  */
-async function _loadPyodide(packages: string[] = []): Promise<void> {
+async function _loadPyodide(packages: string[] = [], stdoutFunc?: (msg: string) => void): Promise<void> {
   self.pyodide = await loadPyodide({
     indexURL,
-    stdout: (msg: string) => {
+    stdout: stdoutFunc || (msg: string) => {
       DEBUG && console.log("loadPyodide stdout: ", msg);
     },
     stderr: (msg: string) => {
