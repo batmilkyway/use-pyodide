@@ -52,9 +52,9 @@ function initialize(
 async function _loadPyodide(packages: string[] = [], stdoutFunc?: (msg: string) => void): Promise<void> {
   self.pyodide = await loadPyodide({
     indexURL,
-    stdout: stdoutFunc || (msg: string) => {
+    stdout: stdoutFunc || ((msg: string) => {
       DEBUG && console.log("loadPyodide stdout: ", msg);
-    },
+    }),
     stderr: (msg: string) => {
       DEBUG && console.log("loadPyodide stderr: ", msg);
     },
@@ -99,7 +99,7 @@ async function runPython(
 //
 
 export interface PyodideRunner {
-  initialize: (packages?: string[]) => Promise<void>;
+  initialize: (packages?: string[], stdoutFunc?: (msg: string) => void) => Promise<void>;
   runPython: (code: string, globals?: Record<string, JSONValue>) => Promise<unknown>;
   version: string;
 }

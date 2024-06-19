@@ -16,7 +16,7 @@ export async function initializePyodide(options?: {
   packages?: string[];
   stdoutFunc?: (msg: string) => void;
 }): Promise<Pyodide> {
-  const { debug = false, packages } = options || {};
+  const { debug = false, packages, stdoutFunc } = options || {};
   setDebug(debug)
 
   if (pyodide === undefined) {
